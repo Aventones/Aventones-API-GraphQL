@@ -1,0 +1,43 @@
+{
+  "name": "aventones-backend-ii-graphql",
+  "module": "index.js",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest",
+    "nodemon": "^3.1.4"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/guerreroandrey5/Aventones-Backend-II-GraphQL.git"
+  },
+  "keywords": [
+    "aventones"
+  ],
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/guerreroandrey5/Aventones-Backend-II-GraphQL.git/issues"
+  },
+  "author": "Andrey Guerrero, Jose Ballestero",
+  "homepage": "https://github.com/guerreroandrey5/Aventones-Backend-II-GraphQL.git#readme",
+  "dependencies": {
+    "apollo-server": "^3.6.0",
+    "apollo-server-express": "^3.13.0",
+    "bcrypt": "^5.1.1",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "graphql": "^16.9.0",
+    "graphql-tools": "^9.0.1",
+    "jsonwebtoken": "^9.0.2",
+    "mongodb": "^6.8.0",
+    "mongoose": "^8.5.1"
+  }
+}
