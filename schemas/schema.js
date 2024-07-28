@@ -5,10 +5,22 @@ const typeDefs = gql`
     getAllUsers: [User!]!
     getUserById(id: ID!): User!
     getAllRides: [Ride!]!
+    getRidesByDriver(id: ID!): [Ride!]!
     getRideById(id: ID!): Ride!
     getRequestsByDriver(id: ID!): [Request!]!
     getRequestByID(id: ID!): Request!
     getAllRequests: [Request!]!
+    getAllVehicles: [Vehicle!]!
+    getVehicleById(id: ID!): Vehicle!
+  }
+
+  type Vehicle {
+    id: ID!
+    model: String
+    year: Int
+    plate: String
+    make: String
+    seats: Int
   }
 
   type User {
@@ -22,6 +34,7 @@ const typeDefs = gql`
     password: String
     profilePicture: String
     isDriver: Boolean
+    vehicle: Vehicle
   }
 
   type Request {
@@ -41,15 +54,6 @@ const typeDefs = gql`
     fee: Int
     time: String
     seatsAvailable: Int
-  }
-
-  type Mutation {
-    createUser(firstName: String!, lastName: String!, cedula: String!, dob: String!, email: String!, phone: Int!, password: String!, profilePicture: String, isDriver: Boolean!): User!
-    updateUser(id: ID!, firstName: String, lastName: String, cedula: String, dob: String, email: String, phone: Int, password: String, profilePicture: String, isDriver: Boolean): User!
-    createRide(driver: ID!, riders: [ID], pickup: String!, destination: String!, days: [String]!, fee: Int!, time: String!, seatsAvailable: Int!): Ride!
-    updateRide(id: ID!, driver: ID, riders: [ID], pickup: String, destination: String, days: [String], fee: Int, time: String, seatsAvailable: Int): Ride!
-    createRequest(rider: ID!, rideDriver: ID!, ride: ID!): Request!
-    updateRequest(id: ID!, rider: ID!, rideDriver: ID!, ride: ID!): Request!
   }
 `;
 

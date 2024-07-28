@@ -1,15 +1,16 @@
 const UserModel = require('./models/user.model');
 const RideModel = require('./models/ride.model');
+const VehicleModel = require('./models/vehicle.model');
 const RequestModel = require('./models/request.model');
 
 const resolvers = {
     Query: {
         //Users Queries
         getAllUsers: async () => {
-            return await UserModel.find().select('-password -__v');
+            return await UserModel.find().populate('vehicle').select('-password -__v');
         },
         getUserById: async (_, { id }) => {
-            return await UserModel.findById(id).select('-password -__v');
+            return await UserModel.findById(id).populate('vehicle').select('-password -__v');
         },
 
         //Rides Queries
@@ -25,6 +26,21 @@ const resolvers = {
                 path: 'driver riders',
                 select: '-__v -password'
             });
+        },
+
+        getRidesByDriver: async (_, { id }) => {
+            return await RideModel.find({ driver: id }).populate({
+                path: 'driver riders',
+                select: '-__v -password'
+            });
+        },
+
+        getAllVehicles: async () => {
+            return await VehicleModel.find();
+        }
+        ,
+        getVehicleById: async (_, { id }) => {
+            return await VehicleModel.findById(id);
         },
 
         //Requests Queries
@@ -69,37 +85,8 @@ const resolvers = {
     Ride: {
         id: (ride) => ride._id.toString(),
     },
-
-    Mutation: {
-        //Users Mutations
-        createUser: async (_, { firstName, lastName, cedula, dob, email, phone, password, profilePicture, isDriver }) => {
-            let newUser = new UserModel({ firstName, lastName, cedula, dob, email, phone, password, profilePicture, isDriver });
-            return await newUser.save();
-        },
-        updateUser: async (_, { id, firstName, lastName, cedula, dob, email, phone, password, profilePicture, isDriver }) => {
-            let user = { firstName, lastName, cedula, dob, email, phone, password, profilePicture, isDriver };
-            return await UserModel.findByIdAndUpdate(id, user, { new: true });
-        },
-
-        //Rides Mutations
-        createRide: async (_, { driver, riders, pickup, destination, days, fee, time, seatsAvailable }) => {
-            let newRide = new RideModel({ driver, riders, pickup, destination, days, fee, time, seatsAvailable });
-            return await newRide.save();
-        },
-        updateRide: async (_, { id, driver, riders, pickup, destination, days, fee, time, seatsAvailable }) => {
-            let ride = { driver, riders, pickup, destination, days, fee, time, seatsAvailable };
-            return await RideModel.findByIdAndUpdate(id, ride, { new: true });
-        },
-
-        //Resquests Mutations
-        createRequest: async (_, { rider, rideDriver, ride }) => {
-            let newRequest = new RequestModel({ rider, rideDriver, ride });
-            return await newRequest.save();
-        },
-        updateRequest: async (_, { id, rider, rideDriver, ride }) => {
-            let request = { rider, rideDriver, ride };
-            return await RequestModel.findByIdAndUpdate(id, request, { new: true });
-        },
+    Vehicle: {
+        id: (vehicle) => vehicle._id.toString(),
     },
 };
 
