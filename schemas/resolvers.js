@@ -16,29 +16,31 @@ const resolvers = {
         //Rides Queries
         getAllRides: async () => {
             const rides = await RideModel.find().populate({
-                path: 'driver riders',
+                path: 'driver riders', populate: {
+                    path: 'vehicle', model: 'Vehicle'},
                 select: '-__v -password'
             });
             return rides;
         },
         getRideById: async (_, { id }) => {
             return await RideModel.findById(id).populate({
-                path: 'driver riders',
+                path: 'driver riders', populate: {
+                    path: 'vehicle', model: 'Vehicle'},
                 select: '-__v -password'
             });
         },
-
         getRidesByDriver: async (_, { id }) => {
             return await RideModel.find({ driver: id }).populate({
-                path: 'driver riders',
+                path: 'driver riders', populate: {
+                    path: 'vehicle', model: 'Vehicle'},
                 select: '-__v -password'
             });
         },
 
+        //Vehicles Queries
         getAllVehicles: async () => {
             return await VehicleModel.find();
-        }
-        ,
+        },
         getVehicleById: async (_, { id }) => {
             return await VehicleModel.findById(id);
         },
@@ -52,27 +54,26 @@ const resolvers = {
         },
         getAllRequests: async () => {
             return await RequestModel.find();
-        },
+        }
     },
     Request: {
         id: (request) => request._id.toString(),
-
         ride: async (request) => {
-            const ride = await RideModel.findById(request.ride);
+            let ride = await RideModel.findById(request.ride);
             if (!ride) {
                 throw new Error('Ride not found ' + error);
             }
             return ride;
         },
         rider: async (request) => {
-            const user = await UserModel.findById(request.rider).select('-password -__v');
+            let user = await UserModel.findById(request.rider).select('-password -__v');
             if (!user) {
                 throw new Error('Rider not found ' + error);
             }
             return user;
         },
         rideDriver: async (request) => {
-            const user = await UserModel.findById(request.rideDriver).select('-password -__v');
+            let user = await UserModel.findById(request.rideDriver).select('-password -__v');
             if (!user) {
                 throw new Error('Driver not found ' + error);
             }

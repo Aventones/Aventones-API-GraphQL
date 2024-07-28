@@ -33,36 +33,44 @@ async function startServer() {
     AventonesGraphQL.use(bodyParser.json({ limit: '2mb' }));
     AventonesGraphQL.use(cookieParser());
     AventonesGraphQL.use(cors({
-        methods: 'GET,POST,DELETE,PATCH',
+        methods: 'POST',
         allowedHeaders: ['Content-Type', 'Authorization']
     }));
 
-    // AventonesGraphQL.use(function (req, res, next) {
-    //     if (req.headers["authorization"]) {
-    //         const authToken = req.headers['authorization'].split(' ')[1];
-    //         try {
-    //             jwt.verify(authToken, JWT_SECRET, (err, decodedToken) => {
-    //                 if (err || !decodedToken) {
-    //                     res.status(401);
-    //                     res.json({
-    //                         error: "Unauthorized"
-    //                     });
-    //                 }
-    //                 next();
-    //             });
-    //         } catch (e) {
-    //             res.status(401);
-    //             res.send({
-    //                 error: "Unauthorized"
-    //             });
-    //         }
-    //     } else {
-    //         res.status(401);
-    //         res.send({
-    //             error: "Unauthorized"
-    //         });
-    //     }
-    // });
+    const ridesRouter = express.Router();
+    ridesRouter.post('/guest', async (req, res) => {
+        const rides = await resolvers.Query.getAllRides();
+        res.json(rides);
+    });
+
+    AventonesGraphQL.use('/graphql', ridesRouter);
+
+    AventonesGraphQL.use(function (req, res, next) {
+        if (req.headers["authorization"]) {
+            const authToken = req.headers['authorization'].split(' ')[1];
+            try {
+                jwt.verify(authToken, JWT_SECRET, (err, decodedToken) => {
+                    if (err || !decodedToken) {
+                        res.status(401);
+                        res.json({
+                            error: "Unauthorized"
+                        });
+                    }
+                    next();
+                });
+            } catch (e) {
+                res.status(401);
+                res.send({
+                    error: "Unauthorized"
+                });
+            }
+        } else {
+            res.status(401);
+            res.send({
+                error: "Unauthorized"
+            });
+        }
+    });
 
     await server.start();
     server.applyMiddleware({ app: AventonesGraphQL, path: '/graphql', cors: true });
