@@ -25,6 +25,7 @@ const typeDefs = gql`
 
   type User {
     id: ID!
+    status: String
     firstName: String
     lastName: String
     cedula: String
