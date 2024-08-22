@@ -12,18 +12,18 @@ const cors = require('cors');
 const jwt = require('jsonwebtoken');
 
 async function startServer() {
-    await mongoose.connect(databaseURL);
+    await mongoose.connect(databaseURL);  
 
     const AventonesGraphQL = express();
     const db = mongoose.connection;
 
     db.on('error', (error) => {
-        console.log(error)
-    })
+        console.log(error);
+    });
 
     db.once('connected', () => {
         console.log('Database Connected');
-    })
+    });
 
     const server = new ApolloServer({
         typeDefs,
