@@ -8,6 +8,7 @@ const typeDefs = gql`
     getRidesByDriver(id: ID!): [Ride!]!
     getRideById(id: ID!): Ride!
     getRequestsByDriver(id: ID!): [Request!]!
+    getRequestbyRiderId(id: ID!): [Request!]!
     getRequestByID(id: ID!): Request!
     getAllRequests: [Request!]!
     getAllVehicles: [Vehicle!]!

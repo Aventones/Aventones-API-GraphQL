@@ -52,6 +52,9 @@ const resolvers = {
         getRequestByID: async (_, { id }) => {
             return await RequestModel.findById(id);
         },
+        getRequestbyRiderId: async (_, { id }) => {
+            return await RequestModel.find({ rider: id });
+        },
         getAllRequests: async () => {
             return await RequestModel.find();
         }
